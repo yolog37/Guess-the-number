@@ -1,0 +1,4 @@
+[build]
+  base = "Día 14/ Consigna dia 14/ guess-the-number"
+  command = "npm run build"
+  publish = "Día 14/ Consigna dia 14/ guess-the-number/dist"
