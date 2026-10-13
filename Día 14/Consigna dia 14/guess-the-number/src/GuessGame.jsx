@@ -8,15 +8,16 @@ const STAGES = [
   { stage: 3, max: 25, lives: 5 },
   { stage: 4, max: 10, lives: 3 },
   { stage: 5, max: 3, lives: 1 },
-];
+]; 
 
+/*
 //esto es para Testing
-/*const STAGES = [
+const STAGES = [
   { stage: 1, max: 1, lives: 1 },
   { stage: 2, max: 1, lives: 1},
   { stage: 3, max: 1, lives: 1 },
   { stage: 4, max: 1, lives: 1 },
-  { stage: 5, max: 3, lives: 1 },
+  { stage: 5, max: 1, lives: 1 },
 ];*/
 
 export default function GuessGame({
@@ -176,7 +177,7 @@ export default function GuessGame({
       return;
     }
 
-    // 4. Fallo: Restar vida y dar pistas
+    // 4. Fallo: Restart vida y dar pistas
     const newAttemptsLeft = Math.max(attemptsLeft - 1, 0);
     setAttemptsLeft(newAttemptsLeft);
     setGuess('');
@@ -264,6 +265,7 @@ export default function GuessGame({
       </div>
 
             {/* --- MODAL: GANÓ EL STAGE (REPARADO) --- */}
+            {/* --- MODAL: GANÓ EL STAGE (PREMIUM ESTRUCTURADO 🚀) --- */}
       {gameState === 'won' && (
         <div className="splash-overlay">
           <div className="splash-modal animate-pop">
@@ -271,11 +273,22 @@ export default function GuessGame({
             <h2 className="splash-title">
               ¡{t.stageLabel.toUpperCase()} {activeStage.stage} {t.checkButton === 'Comprobar' ? 'SUPERADO!' : 'CLEARED!'}
             </h2>
-            <p className="splash-text">
-              {t.checkButton === 'Comprobar' 
-                ? `¡Excelente! Tiempo empleado: ${formatTime(secondsElapsed)}. Puntaje actual: ${score}.`
-                : `Excellent! Time elapsed: ${formatTime(secondsElapsed)}. Current score: ${score}.`}
-            </p>
+            
+            {/* Contenedor con espaciado vertical ordenado en cascada */}
+            <div className="splash-text-structured" style={{ margin: '20px 0', lineHeight: '1.6', textAlign: 'center' }}>
+              <p style={{ margin: '0 0 12px 0', fontSize: '1.1rem', fontWeight: '700', color: 'var(--text-main, #fff)' }}>
+                {t.checkButton === 'Comprobar' ? '¡Nivel Completado con éxito!' : 'Stage successfully completed!'}
+              </p>
+              
+              <p style={{ margin: '0 0 4px 0', opacity: 0.9 }}>
+                {t.checkButton === 'Comprobar' ? 'Tiempo Empleado:' : 'Time Elapsed:'} <strong>{formatTime(secondsElapsed)}</strong>
+              </p>
+              
+              <p style={{ margin: '0 0 0 0', opacity: 0.9 }}>
+                {t.checkButton === 'Comprobar' ? 'Puntaje de Etapa:' : 'Stage Score:'} <strong>{score}</strong>
+              </p>
+            </div>
+
             <button onClick={nextStage} className="splash-button">
               {t.checkButton === 'Comprobar' ? 'Siguiente Stage 🚀' : 'Next Stage 🚀'}
             </button>
@@ -284,15 +297,32 @@ export default function GuessGame({
       )}
 
 
-      {/* --- MODAL: JUEGO TERMINADO COMPLETO --- */}
+             {/* --- MODAL: JUEGO TERMINADO COMPLETO (PREMIUM ESTRUCTURADO 🚀) --- */}
       {gameState === 'gameFinished' && (
         <div className="splash-overlay">
           <div className="splash-modal animate-pop">
             <div className="splash-icon">🏆🔥</div>
-            <h2 className="splash-title">
-  {/* Usamos t.checkButton para saber el idioma sin romper nada 🔥 */}
-  ¡{t.stageLabel.toUpperCase()} {activeStage.stage} {t.checkButton === 'Comprobar' ? 'SUPERADO!' : 'CLEARED!'}
-</h2>
+            <h2 className="splash-title">{t.victoryTitle}</h2>
+            
+            {/* Contenedor con espaciado vertical ordenado */}
+            <div className="splash-text-structured" style={{ margin: '20px 0', lineHeight: '1.6', textAlign: 'center' }}>
+              <p style={{ margin: '0 0 12px 0', fontSize: '1.1rem', fontWeight: '700', color: 'var(--text-main, #fff)' }}>
+                {t.checkButton === 'Comprobar' ? '¡Superaste las 5 etapas!' : 'You completed all 5 stages!'}
+              </p>
+              
+              <p style={{ margin: '0 0 4px 0', opacity: 0.9 }}>
+                {t.checkButton === 'Comprobar' ? 'Tiempo Total:' : 'Total Time:'} <strong>{formatTime(secondsElapsed)}</strong>
+              </p>
+              
+              <p style={{ margin: '0 0 16px 0', opacity: 0.9 }}>
+                {t.checkButton === 'Comprobar' ? 'Puntuación Final:' : 'Final Score:'} <strong>{score}</strong>
+              </p>
+              
+              <p style={{ margin: '15px 0 0 0', fontSize: '1.2rem', fontWeight: '800', color: '#34c759', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                {t.checkButton === 'Comprobar' ? '¡ESO FUE UNA CHEPA!' : 'THAT WAS DUMB LUCK!!'}
+              </p>
+            </div>
+
             <button onClick={startNewGame} className="splash-button">
               <img src={rocketIcon} alt="" className="rocket-icon-svg" />
               {t.playAgain}
@@ -301,21 +331,41 @@ export default function GuessGame({
         </div>
       )}
 
-      {/* --- MODAL: DERROTA --- */}
+
+
+            {/* --- MODAL: DERROTA (PREMIUM ESTRUCTURADO 💀) --- */}
       {gameState === 'lost' && (
         <div className="splash-overlay">
           <div className="splash-modal lost-modal animate-pop">
             <div className="splash-icon">💀💔</div>
             <h2 className="splash-title lost-title">{t.defeatTitle}</h2>
-            <p className="splash-text">
-              {t.lostMessage(activeStage.stage, targetNumber, score)}
-            </p>
+            
+            {/* Estructura vertical limpia para el Game Over */}
+            <div className="splash-text-structured" style={{ margin: '20px 0', lineHeight: '1.6', textAlign: 'center' }}>
+              <p style={{ margin: '0 0 12px 0', fontSize: '1.1rem', fontWeight: '700', color: '#ff3b30' }}>
+                {t.checkButton === 'Comprobar' ? '¡Te quedaste sin vidas!' : 'You ran out of lives!'}
+              </p>
+              
+              <p style={{ margin: '0 0 8px 0', opacity: 0.9 }}>
+                {t.checkButton === 'Comprobar' ? 'En la etapa:' : 'In stage:'} <strong>{activeStage.stage}</strong>
+              </p>
+              
+              <p style={{ margin: '0 0 8px 0', opacity: 0.9 }}>
+                {t.checkButton === 'Comprobar' ? 'Puntuación obtenida:' : 'Score earned:'} <strong>{score}</strong>
+              </p>
+              
+              <p style={{ margin: '15px 0 0 0', fontSize: '1.2rem', fontWeight: '800', color: '#ff453a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                {t.checkButton === 'Comprobar' ? `El número era: ${targetNumber}` : `The number was: ${targetNumber}`}
+              </p>
+            </div>
+
             <button onClick={startNewGame} className="splash-button lost-button">
               {t.restartButton}
             </button>
           </div>
         </div>
       )}
+
     </>
   );
 }
