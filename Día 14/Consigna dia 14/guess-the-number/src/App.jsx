@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { Header } from './Header';
 import GuessGame from './GuessGame';
-import { ThemeToggle } from './ThemeToggle'; // 1. NUEVO IMPORT
+import { ThemeToggle } from './ThemeToggle';
+import { DevBanner } from './DevBanner'; // 👈 Aseguramos el Import del banner
 import { translations } from './translations';
 import './App.css';
-import { LanguageToggle } from './LanguageToggle';
 
 export function App() {
   const [lang, setLang] = useState('es');
@@ -12,6 +12,7 @@ export function App() {
   const [currentMaxLimit, setCurrentMaxLimit] = useState(1);
   const [currentStage, setCurrentStage] = useState(1);
   const [theme, setTheme] = useState('dark'); 
+  const [isChangingLang, setIsChangingLang] = useState(false); // Para el efecto premium
 
   const traducciones = translations[lang];
 
@@ -29,17 +30,23 @@ export function App() {
   };
 
   const toggleLanguage = () => {
-    setLang((prevLang) => (prevLang === 'es' ? 'en' : 'es'));
+    setIsChangingLang(true);
+    setTimeout(() => {
+      setLang((prevLang) => (prevLang === 'es' ? 'en' : 'es'));
+      setIsChangingLang(false);
+    }, 250);
   };
 
   return (
     <div
-      className={`app-shell stage-${currentStage}`}
+      className={`app-shell stage-${currentStage} ${isChangingLang ? 'lang-fade-out' : 'lang-fade-in'}`}
       data-theme={theme}
       data-lang={lang}
       style={{ background: 'var(--page-gradient)' }}
     >
-      
+      {/* El Banner se renderiza aquí arriba, fijo en la raíz 🔥 */}
+      <DevBanner />
+
       {/* Botón de Idiomas */}
       <button 
         className="language-toggle-btn"
@@ -66,7 +73,6 @@ export function App() {
         </div>
       </button>
 
-      {/* 2. NUEVO COMPONENTE EXTRAÍDO (Línea súper limpia) */}
       <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
 
       <Header
