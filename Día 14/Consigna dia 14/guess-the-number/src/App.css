@@ -22,7 +22,6 @@
 
   /* Degradado de fondo fluido y limpio para el modo claro */
   --page-gradient: linear-gradient(135deg, #C1E8FF, #7DA0CA, #5483B3);
-  color-scheme: light;
 }
 
 [data-theme="dark"] {
@@ -40,7 +39,6 @@
 
   /* Degradado fluido profundo para el modo oscuro */
   --page-gradient: linear-gradient(135deg, #021024, #052659, #000000);
-  color-scheme: dark;
 }
 
 /* ==========================================================================
@@ -53,12 +51,15 @@ body,
   min-width: 320px;
   min-height: 100%;
   margin: 0;
+  color-scheme: dark; 
+  
 }
 
 body {
   display: block;
   min-height: 100vh;
   background: var(--page-gradient);
+  
 }
 
 #root {
@@ -125,7 +126,7 @@ body {
   font-size: 0.85rem;
   color: var(--text-main);
   font-weight: 700;
-  background: var(--card-bg); 
+  background: var(--card-bg); /* Sólido en base a la paleta */
   padding: 8px 14px;
   border-radius: 20px;
   border: 1px solid var(--card-border);
@@ -134,7 +135,6 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* Transición fluida general para el cambio de colores y temas */
 .game-area,
 .game-info-box,
 .guess-input,
@@ -155,7 +155,6 @@ body {
 .history-label {
   transition: color 0.6s ease;
 }
-
 /* ==========================================================================
    4. TARJETA DE JUEGO PLANA Y SÓLIDA (ADIÓS EFECTO GLASS)
    ========================================================================== */
@@ -167,12 +166,18 @@ body {
   padding: 35px 30px 30px 30px;
   border-radius: 24px;
   box-sizing: border-box;
+
+  /* Colores e identidades sólidas de tu paleta */
   background: var(--card-bg) !important; 
   border: 2px solid var(--card-border) !important;
   color: var(--text-main) !important;
+  
+  /* Sombras planas limpias */
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Eliminamos por completo el reflejo brillante superior anterior */
 .game-area::before {
   display: none !important;
 }
@@ -197,6 +202,7 @@ body {
   z-index: 2;
 }
 
+/* El texto de la caja de información adopta el color correcto según el modo */
 [data-theme="light"] .game-info-box {
   color: var(--text-inverted);
 }
@@ -217,7 +223,7 @@ body {
 }
 
 [data-theme="light"] .game-attempts {
-  color: #C1E8FF; 
+  color: #C1E8FF; /* Contraste claro sobre la caja azul en modo claro */
 }
 
 .input-group {
@@ -424,68 +430,67 @@ body {
   width: 20px;
   height: 20px;
   object-fit: contain;
-animation: rocketPushRight 0.8s ease-in-out infinite alternate;
+  animation: rocketPushRight 0.8s ease-in-out infinite alternate;
 }
+
 @keyframes rocketPushRight {
-0% { transform: translateX(0px); }
-100% { transform: translateX(5px) scale(1.1); }
+  0% { transform: translateX(0px); }
+  100% { transform: translateX(5px) scale(1.1); }
 }
+
 /* ==========================================================================
-7. ANIMACIÓN DE SACUDIDA PARA ERRORES (SHAKE)
-========================================================================== */
+   7. ANIMACIÓN DE SACUDIDA PARA ERRORES (SHAKE)
+   ========================================================================== */
 .game-message.shake-animation {
-animation: horizontalShake 0.4s ease-in-out;
-color: #ff3b30 !important;
-font-weight: 700;
+  animation: horizontalShake 0.4s ease-in-out;
+  color: #ff3b30 !important; /* Destello rojo de alerta */
+  font-weight: 700;
 }
+
 @keyframes horizontalShake {
-0%, 100% { transform: translateX(0); }
-15% { transform: translateX(-6px); }
-30% { transform: translateX(5px); }
-45% { transform: translateX(-4px); }
-60% { transform: translateX(3px); }
-75% { transform: translateX(-2px); }
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-6px); }
+  30% { transform: translateX(5px); }
+  45% { transform: translateX(-4px); }
+  60% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
 }
+
+
 /* ==========================================================================
-8. SECUENCIA PREMIUM: FADE-OUT Y LUEGO FADE-IN AL CAMBIAR IDIOMA
-========================================================================== */
+   11. SECUENCIA PREMIUM: FADE-OUT Y LUEGO FADE-IN AL CAMBIAR IDIOMA
+   ========================================================================== */
 .game-range-title,
 .game-message,
 .game-attempts,
 .guess-button,
 .history-label,
 .score-board span {
-transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+  transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
 }
+
 .app-shell.lang-fade-out .game-range-title,
 .app-shell.lang-fade-out .game-message,
 .app-shell.lang-fade-out .game-attempts,
 .app-shell.lang-fade-out .guess-button,
 .app-shell.lang-fade-out .history-label,
 .app-shell.lang-fade-out .score-board span {
-opacity: 0;
-transform: translateY(-2px);
+  opacity: 0;
+  transform: translateY(-2px);
 }
+
 .app-shell.lang-fade-in .game-range-title,
 .app-shell.lang-fade-in .game-message,
 .app-shell.lang-fade-in .game-attempts,
 .app-shell.lang-fade-in .guess-button,
 .app-shell.lang-fade-in .history-label,
 .app-shell.lang-fade-in .score-board span {
-opacity: 1;
-transform: translateY(0);
+  opacity: 1;
+  transform: translateY(0);
 }
-/* ==========================================================================
-9. AJUSTES RESPONSIVOS PARA CELULARES (BOTONES PEGADOS AL BORDE)
-========================================================================== */
-@media (max-width: 480px) {
-.language-toggle-btn {
-right: 10px !important;
-}
-.theme-btn {
-right: 10px !important;
-}
-.score-board {
-left: 10px !important;
-}
-}
+
+
+
+
+
+
