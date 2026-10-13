@@ -263,33 +263,36 @@ export default function GuessGame({
         </div>
       </div>
 
-      {/* --- MODAL: GANÓ EL STAGE --- */}
+            {/* --- MODAL: GANÓ EL STAGE (REPARADO) --- */}
       {gameState === 'won' && (
         <div className="splash-overlay">
           <div className="splash-modal animate-pop">
             <div className="splash-icon">🎉👑</div>
             <h2 className="splash-title">
-              ¡{t.stageLabel.toUpperCase()} {activeStage.stage} SUPERADO!
+              ¡{t.stageLabel.toUpperCase()} {activeStage.stage} {t.checkButton === 'Comprobar' ? 'SUPERADO!' : 'CLEARED!'}
             </h2>
             <p className="splash-text">
-              {t.stageWonMessage(formatTime(secondsElapsed), score)}
+              {t.checkButton === 'Comprobar' 
+                ? `¡Excelente! Tiempo empleado: ${formatTime(secondsElapsed)}. Puntaje actual: ${score}.`
+                : `Excellent! Time elapsed: ${formatTime(secondsElapsed)}. Current score: ${score}.`}
             </p>
             <button onClick={nextStage} className="splash-button">
-              {t.nextStageButton}
+              {t.checkButton === 'Comprobar' ? 'Siguiente Stage 🚀' : 'Next Stage 🚀'}
             </button>
           </div>
         </div>
       )}
+
 
       {/* --- MODAL: JUEGO TERMINADO COMPLETO --- */}
       {gameState === 'gameFinished' && (
         <div className="splash-overlay">
           <div className="splash-modal animate-pop">
             <div className="splash-icon">🏆🔥</div>
-            <h2 className="splash-title">{t.victoryTitle}</h2>
-            <p className="splash-text">
-              {t.finishedMessage(formatTime(secondsElapsed), score)}
-            </p>
+            <h2 className="splash-title">
+  {/* Usamos t.checkButton para saber el idioma sin romper nada 🔥 */}
+  ¡{t.stageLabel.toUpperCase()} {activeStage.stage} {t.checkButton === 'Comprobar' ? 'SUPERADO!' : 'CLEARED!'}
+</h2>
             <button onClick={startNewGame} className="splash-button">
               <img src={rocketIcon} alt="" className="rocket-icon-svg" />
               {t.playAgain}
