@@ -1,0 +1,4 @@
+[build]
+  base = "Día 14/Consigna dia 14/guess-the-number"
+  command = "npm ci --include=dev && npm run build"
+  publish = "dist"
