@@ -1,0 +1,77 @@
+/* --- BOTÓN DE TEMA EN ARMONÍA CON EL IDIOMA --- */
+.theme-btn {
+  position: fixed;
+  top: 100px;
+  right: 24px;
+  right: 10px !important;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  height: 46px;
+  width: 68px;
+  border-radius: 16px;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  box-shadow: none;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Eliminamos por completo el reflejo brillante superior anterior */
+.theme-btn::before {
+  display: none !important;
+}
+
+.theme-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: none;
+}
+
+/* Efecto físico de pulsación al hacer clic */
+.theme-btn:active .theme-icon-wrapper {
+  transform: scale(0.85);
+}
+
+/* Contenedor de iconos: Mantiene la rotación intacta */
+.theme-icon-wrapper {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.theme-icon-wrapper svg {
+  position: absolute;
+  stroke-width: 2.3;
+  transition: transform 0.6s cubic-bezier(0.34, 1.5, 0.64, 1), opacity 0.4s ease;
+}
+
+/* Lógica de animación limpia */
+.sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.moon {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0);
+}
+
+[data-theme="dark"] .sun {
+  opacity: 0;
+  transform: rotate(90deg) scale(0);
+}
+
+[data-theme="dark"] .moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}

@@ -1,0 +1,79 @@
+/* --- BOTÓN DE IDIOMA EN ARMONÍA ABSOLUTA (ÓVALO IDÉNTICO) --- */
+.language-toggle-btn {
+  position: fixed;
+  /* Forzamos que se alineen en la misma columna derecha */
+  top: 45px; 
+  right: 24px; /* Cambiado a 24px para alinearse con el 
+  right de tu theme-btn */
+  right: 10px !important;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Medidas de cápsula idénticas al botón inferior */
+  width: 68px;         /* Reducido para que tenga el mismo ancho visual */
+  height: 46px;        /* Alto exacto del contenedor inferior */
+  border-radius: 16px; /* Curvatura suavizada igual a la de la luna */
+  padding: 0;
+  
+  /* Fondo oscuro translúcido idéntico al inferior */
+  background: rgba(0, 0, 0, 0.35); 
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  box-shadow: none;
+  cursor: pointer;
+  outline: none;
+  
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.language-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: none;
+}
+
+/* Efecto físico de pulsación al hacer clic */
+.language-toggle-btn:active .flag-icon-wrapper {
+  transform: scale(0.85);
+}
+
+/* --- ENVOLTURA PARA LAS BANDERAS --- */
+.flag-icon-wrapper {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.flag-icon-wrapper svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.34, 1.5, 0.64, 1), opacity 0.4s ease;
+}
+
+/* --- LÓGICA DE ROTACIÓN DE LAS BANDERAS --- */
+.flag-es {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.flag-en {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0);
+}
+
+[data-lang="en"] .flag-es {
+  opacity: 0;
+  transform: rotate(90deg) scale(0);
+}
+
+[data-lang="en"] .flag-en {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}

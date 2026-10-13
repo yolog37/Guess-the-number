@@ -1,0 +1,543 @@
+/* ==========================================================================
+   1. VARIABLES GLOBALES Y NUEVA PALETA DE COLORES (NUEVO DESIGN)
+   ========================================================================== */
+:root {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* --- NUEVO LIGHT MODE (Azules Suaves y Limpios) --- */
+  --bg-color: #C1E8FF;                  /* El azul más claro de tu paleta */
+  --card-bg: #7DA0CA;                  /* Azul medio para la tarjeta */
+  --card-info-bg: #5483B3;             /* Azul intermedio para cajas internas */
+  --card-border: #052659;              /* Contorno oscuro elegante */
+  --text-main: #021024;                /* El azul más oscuro para máxima lectura */
+  --text-inverted: #FFFFFF;            /* Texto blanco para contrastes */
+  
+  /* Botón e inputs en Light Mode */
+  --input-bg: #C1E8FF;
+  --btn-gradient: linear-gradient(135deg, #052659, #5483B3);
+
+  /* Degradado de fondo fluido y limpio para el modo claro */
+  --page-gradient: linear-gradient(135deg, #C1E8FF, #7DA0CA, #5483B3);
+}
+
+[data-theme="dark"] {
+  /* --- DARK MODE ORIGINAL (Azul Profundo y Sólido) --- */
+  --bg-color: #021024;                 /* El tono más profundo de tu paleta */
+  --card-bg: #052659;                  /* Azul noche para la tarjeta */
+  --card-info-bg: #021024;             /* Cajas internas oscuras */
+  --card-border: #7DA0CA;              /* Bordes que resaltan en la oscuridad */
+  --text-main: #FFFFFF;                /* Texto blanco principal */
+  --text-inverted: #021024;            /* Texto oscuro cuando se necesite */
+
+  /* Botón e inputs en Dark Mode */
+  --input-bg: rgba(0, 0, 0, 0.3);
+  --btn-gradient: linear-gradient(135deg, #007aff, #00e5ff);
+
+  /* Degradado fluido profundo para el modo oscuro */
+  --page-gradient: linear-gradient(135deg, #021024, #052659, #000000);
+}
+
+/* ==========================================================================
+   2. ESTRUCTURA BASE Y LAYOUT UNIFICADO (TODOS LOS STAGES)
+   ========================================================================== */
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+  color-scheme: dark; 
+  
+}
+
+body {
+  display: block;
+  min-height: 100vh;
+  background: var(--page-gradient);
+  
+}
+
+#root {
+  max-width: none;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.app-shell {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  min-height: 100vh;
+  padding: 80px 24px 40px;
+  background: var(--page-gradient);
+  transition: background 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.app-shell.stage-1,
+.app-shell.stage-2,
+.app-shell.stage-3,
+.app-shell.stage-4,
+.app-shell.stage-5 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 24px;
+}
+
+.app-shell .game-header {
+  margin-bottom: 0;
+  width: 100%;
+  max-width: 500px;
+}
+
+.app-shell .game-area {
+  width: 100%;
+  max-width: 420px;
+  min-width: 0;
+  transform: none;
+}
+
+@media (max-width: 850px) {
+  .app-shell {
+    gap: 20px;
+    padding: 80px 20px 32px;
+  }
+}
+
+/* ==========================================================================
+   3. MARCADOR SUPERIOR IZQUIERDO GLOBAL (SIN GLASS)
+   ========================================================================== */
+.score-board {
+  position: fixed;
+  top: 45px;
+  left: 5px;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  font-weight: 700;
+  background: var(--card-bg); /* Sólido en base a la paleta */
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  gap: 3px;
+  z-index: 1100;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.game-area,
+.game-info-box,
+.guess-input,
+.guess-button,
+.history-chip,
+.score-board,
+.dev-banner-ticker {
+  transition: 
+    background-color 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+    background 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+    border-color 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+    color 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.4s ease;
+}
+
+.game-message,
+.game-range-title,
+.history-label {
+  transition: color 0.6s ease;
+}
+/* ==========================================================================
+   4. TARJETA DE JUEGO PLANA Y SÓLIDA (ADIÓS EFECTO GLASS)
+   ========================================================================== */
+.game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 35px 30px 30px 30px;
+  border-radius: 24px;
+  box-sizing: border-box;
+
+  /* Colores e identidades sólidas de tu paleta */
+  background: var(--card-bg) !important; 
+  border: 2px solid var(--card-border) !important;
+  color: var(--text-main) !important;
+  
+  /* Sombras planas limpias */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Eliminamos por completo el reflejo brillante superior anterior */
+.game-area::before {
+  display: none !important;
+}
+
+.game-range-title {
+  font-size: 1.2rem;
+  color: var(--text-main);
+  margin: 0 0 15px 0;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.game-info-box {
+  background-color: var(--card-info-bg) !important;
+  border-radius: 12px;
+  padding: 12px 15px;
+  width: 100%;
+  margin-bottom: 20px;
+  text-align: center;
+  box-sizing: border-box;
+  border: 1px solid var(--card-border);
+  z-index: 2;
+}
+
+/* El texto de la caja de información adopta el color correcto según el modo */
+[data-theme="light"] .game-info-box {
+  color: var(--text-inverted);
+}
+
+.game-message {
+  font-size: 0.95rem;
+  color: inherit;
+  margin: 0 0 5px 0;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.game-attempts {
+  font-size: 0.9rem;
+  color: #ff3b30;
+  font-weight: 700;
+  margin: 0;
+}
+
+[data-theme="light"] .game-attempts {
+  color: #C1E8FF; /* Contraste claro sobre la caja azul en modo claro */
+}
+
+.input-group {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  z-index: 2;
+}
+
+.guess-input {
+  font-size: 16px;
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background-color: var(--input-bg);
+  color: var(--text-main);
+  width: 110px;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.guess-input:focus {
+  border-color: var(--text-main);
+  box-shadow: 0 0 8px var(--card-border);
+}
+
+.guess-button {
+  font-size: 16px;
+  padding: 12px 20px;
+  cursor: pointer;
+  background: var(--btn-gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  flex: 1;
+  transition: transform 0.1s, opacity 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.guess-button:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.guess-button:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================================
+   5. HISTORIAL DE INTENTOS
+   ========================================================================== */
+.history-container {
+  margin-top: 20px;
+  width: 100%;
+  text-align: left;
+  z-index: 2;
+}
+
+.history-label {
+  font-size: 0.85rem;
+  color: inherit;
+  opacity: 0.8;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.history-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.history-chip {
+  background: var(--card-info-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+[data-theme="light"] .history-chip {
+  color: var(--text-inverted);
+}
+
+/* ==========================================================================
+   6. MODALES SPLASH Y NOTIFICACIONES
+   ========================================================================== */
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1200;
+}
+
+.splash-modal {
+  background: linear-gradient(135deg, #052659, #021024);
+  border: 2px solid var(--card-border);
+  padding: 40px 30px;
+  border-radius: 24px;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  color: #fff;
+}
+
+[data-theme="light"] .splash-modal {
+  background: linear-gradient(135deg, #FFFFFF, #C1E8FF);
+  color: #021024;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+}
+
+.splash-icon {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+  display: inline-block;
+  animation: bounceAndFloat 2s ease-in-out infinite alternate;
+}
+
+@keyframes bounceAndFloat {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-8px) scale(1.06); }
+  100% { transform: translateY(-4px) scale(1.02); }
+}
+
+.splash-title {
+  font-size: 1.6rem;
+  color: #007aff;
+  margin: 0 0 15px 0;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+[data-theme="light"] .splash-title {
+  color: #052659;
+}
+
+.splash-text {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0 0 25px 0;
+  line-height: 1.5;
+}
+
+.splash-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #34c759, #32d74b);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 5px 15px rgba(52, 199, 89, 0.4);
+  transition: transform 0.1s;
+}
+
+.splash-button:active {
+  transform: scale(0.97);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop {
+  animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.lost-modal {
+  border: 2px solid #ff3b30 !important;
+}
+
+.lost-title {
+  color: #ff3b30 !important;
+}
+
+.lost-button {
+  background: linear-gradient(135deg, #ff3b30, #ff453a) !important;
+  color: #fff !important;
+  box-shadow: 0 5px 15px rgba(255, 59, 48, 0.4) !important;
+}
+
+.rocket-icon-svg {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  animation: rocketPushRight 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes rocketPushRight {
+  0% { transform: translateX(0px); }
+  100% { transform: translateX(5px) scale(1.1); }
+}
+
+/* ==========================================================================
+   7. ANIMACIÓN DE SACUDIDA PARA ERRORES (SHAKE)
+   ========================================================================== */
+.game-message.shake-animation {
+  animation: horizontalShake 0.4s ease-in-out;
+  color: #ff3b30 !important; /* Destello rojo de alerta */
+  font-weight: 700;
+}
+
+@keyframes horizontalShake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-6px); }
+  30% { transform: translateX(5px); }
+  45% { transform: translateX(-4px); }
+  60% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
+}
+
+
+/* ==========================================================================
+   11. TRANSICIÓN FLUIDA AL CAMBIAR DE IDIOMA (TEXT FADE EFFECT)
+   ========================================================================== */
+
+/* Añadimos un efecto de transición global para la opacidad de los textos legibles */
+.game-range-title,
+.game-message,
+.game-attempts,
+.guess-button,
+.history-label,
+.score-board span {
+  /* Registramos una animación de parpadeo rápido controlada */
+  animation: languageTextFade 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Forzamos a que la animación se vuelva a disparar cada vez que el atributo cambia */
+[data-lang="es"] .game-range-title,
+[data-lang="es"] .game-message,
+[data-lang="es"] .game-attempts,
+[data-lang="es"] .guess-button,
+[data-lang="es"] .history-label,
+[data-lang="es"] .score-board span,
+[data-lang="en"] .game-range-title,
+[data-lang="en"] .game-message,
+[data-lang="en"] .game-attempts,
+[data-lang="en"] .guess-button,
+[data-lang="en"] .history-label,
+[data-lang="en"] .score-board span {
+  /* El truco es re-aplicar los keyframes para que el navegador los refresque al vuelo */
+  animation: languageTextFade 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes languageTextFade {
+  0% {
+    opacity: 0.3;
+    transform: translateY(1px); /* Un sutil desplazamiento físico hacia abajo */
+    filter: blur(1px); /* Efecto opcional de desenfoque cinematográfico muy leve */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ==========================================================================
+   11. TRANSICIÓN FLUIDA AL CAMBIAR DE IDIOMA (MÉTODO ULTRA SEGURO)
+   ========================================================================== */
+
+/* Aplicamos el efecto de parpadeo solo cuando cambie el atributo de idioma */
+[data-lang="es"] .game-message,
+[data-lang="es"] .game-range-title {
+  animation: fadeToEs 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+[data-lang="en"] .game-message,
+[data-lang="en"] .game-range-title {
+  animation: fadeToEn 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Animaciones individuales para obligar al navegador a reiniciar el ciclo limpio */
+@keyframes fadeToEs {
+  0% {
+    opacity: 0.4;
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeToEn {
+  0% {
+    opacity: 0.4;
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
