@@ -1,0 +1,65 @@
+/* Reset, layout general y transición de idioma. */
+:root {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+  color-scheme: dark;
+}
+
+body {
+  display: block;
+  min-height: 100vh;
+  background: var(--page-gradient);
+}
+
+#root {
+  max-width: none;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.app-shell {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  min-height: 100vh;
+  padding: 80px 24px 40px;
+  background: var(--page-gradient);
+  transition: background 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@media (max-width: 850px) {
+  .app-shell {
+    gap: 20px;
+    padding: 80px 20px 32px;
+  }
+}
+
+/* Fade-out de los textos mientras cambia el idioma.
+   Cada componente declara `opacity` en su propia transition. */
+.app-shell.lang-fade-out :is(
+  .game-range-title,
+  .game-message,
+  .game-attempts,
+  .guess-button,
+  .history-label,
+  .score-board span
+) {
+  opacity: 0;
+  transform: translateY(-2px);
+}

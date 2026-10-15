@@ -1,0 +1,236 @@
+/* ---------- Marcador ---------- */
+.score-board {
+  position: fixed;
+  top: 45px;
+  left: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: 0.85rem;
+  font-weight: 700;
+  z-index: 1100;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition:
+    background-color var(--theme-transition),
+    border-color var(--theme-transition),
+    color var(--theme-transition),
+    box-shadow 0.4s ease;
+}
+
+.score-board span {
+  transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+}
+
+/* ---------- Tarjeta ---------- */
+.game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 420px;
+  min-width: 0;
+  padding: 35px 30px 30px;
+  border-radius: 24px;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  color: var(--text-main);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.game-range-title {
+  font-size: 1.2rem;
+  color: var(--text-main);
+  margin: 0 0 15px 0;
+  font-weight: 700;
+  z-index: 2;
+  transition:
+    color var(--theme-transition),
+    opacity 0.25s ease-in-out,
+    transform 0.25s ease-in-out;
+}
+
+.game-info-box {
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background-color: var(--card-info-bg);
+  text-align: center;
+  z-index: 2;
+  transition:
+    background-color var(--theme-transition),
+    border-color var(--theme-transition),
+    color var(--theme-transition);
+}
+
+[data-theme="light"] .game-info-box {
+  color: var(--text-inverted);
+}
+
+.game-message {
+  font-size: 0.95rem;
+  color: inherit;
+  margin: 0 0 5px 0;
+  line-height: 1.4;
+  font-weight: 500;
+  transition:
+    color var(--theme-transition),
+    opacity 0.25s ease-in-out,
+    transform 0.25s ease-in-out;
+}
+
+.game-message.shake-animation {
+  animation: horizontalShake 0.4s ease-in-out;
+  color: #ff3b30;
+  font-weight: 700;
+}
+
+@keyframes horizontalShake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-6px); }
+  30% { transform: translateX(5px); }
+  45% { transform: translateX(-4px); }
+  60% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
+}
+
+/* Destello al recibir una pista. El componente se remonta en cada intento
+   (key), así que la animación se repite aunque la pista sea la misma. */
+.game-message.flash-green {
+  animation: flashGreen 0.9s ease-out;
+}
+
+.game-message.flash-yellow {
+  animation: flashYellow 0.9s ease-out;
+}
+
+@keyframes flashGreen {
+  0% { color: #30d158; text-shadow: 0 0 14px rgba(48, 209, 88, 0.9); transform: scale(1.06); }
+  55% { color: #30d158; text-shadow: 0 0 8px rgba(48, 209, 88, 0.5); transform: scale(1); }
+}
+
+@keyframes flashYellow {
+  0% { color: #ffd60a; text-shadow: 0 0 14px rgba(255, 214, 10, 0.9); transform: scale(1.06); }
+  55% { color: #ffd60a; text-shadow: 0 0 8px rgba(255, 214, 10, 0.5); transform: scale(1); }
+}
+
+.game-attempts {
+  font-size: 0.9rem;
+  color: #ff3b30;
+  font-weight: 700;
+  margin: 0;
+  transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+}
+
+[data-theme="light"] .game-attempts {
+  color: #C1E8FF;
+}
+
+/* ---------- Formulario ---------- */
+.input-group {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  z-index: 2;
+}
+
+.guess-input {
+  width: 110px;
+  font-size: 16px;
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background-color: var(--input-bg);
+  color: var(--text-main);
+  text-align: center;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.guess-input:focus {
+  border-color: var(--text-main);
+  box-shadow: 0 0 8px var(--card-border);
+}
+
+.guess-button {
+  flex: 1;
+  font-size: 16px;
+  padding: 12px 20px;
+  cursor: pointer;
+  background: var(--btn-gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.1s, opacity 0.25s ease-in-out;
+}
+
+.guess-button:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.guess-button:active {
+  transform: scale(0.97);
+}
+
+.guess-button:disabled,
+.guess-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ---------- Historial ---------- */
+.history-container {
+  margin-top: 20px;
+  width: 100%;
+  text-align: left;
+  z-index: 2;
+}
+
+.history-label {
+  display: block;
+  font-size: 0.85rem;
+  color: inherit;
+  opacity: 0.8;
+  margin-bottom: 8px;
+  font-weight: 600;
+  transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+}
+
+.history-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.history-chip {
+  background: var(--card-info-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background-color var(--theme-transition),
+    border-color var(--theme-transition),
+    color var(--theme-transition);
+}
+
+[data-theme="light"] .history-chip {
+  color: var(--text-inverted);
+}

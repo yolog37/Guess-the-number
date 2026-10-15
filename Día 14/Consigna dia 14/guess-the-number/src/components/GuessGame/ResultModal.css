@@ -1,0 +1,176 @@
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1200;
+}
+
+.splash-modal {
+  background: linear-gradient(135deg, #052659, #021024);
+  border: 2px solid var(--card-border);
+  padding: 40px 30px;
+  border-radius: 24px;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  color: #fff;
+}
+
+[data-theme="light"] .splash-modal {
+  background: linear-gradient(135deg, #FFFFFF, #C1E8FF);
+  color: #021024;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+}
+
+.splash-icon {
+  display: inline-block;
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+  animation: bounceAndFloat 2s ease-in-out infinite alternate;
+}
+
+@keyframes bounceAndFloat {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.06); }
+  100% { transform: translateY(-4px) scale(1.02); }
+}
+
+.splash-title {
+  font-size: 1.6rem;
+  color: #007aff;
+  margin: 0 0 15px 0;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+[data-theme="light"] .splash-title {
+  color: #052659;
+}
+
+/* Cuerpo del modal (antes eran estilos inline repetidos) */
+.splash-text-structured {
+  margin: 20px 0;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.splash-headline {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main, #fff);
+}
+
+.splash-stat {
+  margin: 0 0 6px 0;
+  opacity: 0.9;
+}
+
+.splash-highlight {
+  margin: 15px 0 0 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #34c759;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.splash-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: linear-gradient(135deg, #34c759, #32d74b);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(52, 199, 89, 0.4);
+  transition: transform 0.1s;
+}
+
+.splash-button:active {
+  transform: scale(0.97);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop {
+  animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ---------- Variante derrota (van al final para ganar por orden) ---------- */
+.splash-modal.lost-modal {
+  border: 2px solid #ff3b30;
+}
+
+.splash-title.lost-title {
+  color: #ff3b30;
+}
+
+.lost-modal .splash-headline {
+  color: #ff3b30;
+}
+
+.lost-modal .splash-highlight {
+  color: #ff453a;
+}
+
+.splash-button.lost-button {
+  background: linear-gradient(135deg, #ff3b30, #ff453a);
+  box-shadow: 0 5px 15px rgba(255, 59, 48, 0.4);
+}
+
+.rocket-icon-svg {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  animation: rocketPushRight 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes rocketPushRight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(5px) scale(1.1); }
+}
+
+/* ---------- Descripción y botón secundario (oferta de segunda oportunidad) ---------- */
+.splash-description {
+  margin: 0 0 12px 0;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.splash-button--secondary {
+  margin-top: 12px;
+}
+
+/* ---------- Variante "paseo de la vergüenza" ---------- */
+.splash-modal.shame-modal {
+  border: 2px solid #ff9f0a;
+}
+
+.shame-modal .splash-title {
+  color: #ff9f0a;
+}
+
+.shame-modal .splash-highlight {
+  color: #ff9f0a;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  text-transform: none;
+}

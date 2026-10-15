@@ -1,13 +1,12 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+// Los estilos globales van primero para que los de cada componente puedan sobrescribirlos.
+import './styles/variables.css';
+import './styles/base.css';
+import App from './App.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
-  </StrictMode>,
-)
-
-
-//Funcionamiento: Toma el componente principal <App/> y lo monta dentro del elemento HTML con el ID root que se encuentra en tu archivo index.html. También envuelve la app en herramientas estándar como React.StrictMode para detectar posibles errores de desarrollo.
+  </StrictMode>
+);

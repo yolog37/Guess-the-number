@@ -1,66 +1,63 @@
-import React, { useCallback, useState } from 'react';
-import { Header } from './Header';
-import GuessGame from './GuessGame';
-import { ThemeToggle } from './ThemeToggle';
-import { DevBanner } from './DevBanner'; 
-import { LanguageToggle } from './LanguageToggle'; // 👈 Importamos tu componente limpio
-import { translations } from './translations';
-import './App.css';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import GuessGame from './components/GuessGame/GuessGame';
+import { Header } from './components/Header/Header';
+import { DevBanner } from './components/ui/DevBanner';
+import { LanguageToggle } from './components/ui/LanguageToggle';
+import { ThemeToggle } from './components/ui/ThemeToggle';
+import { useLocalStorage } from './hooks/useLocalStorage';
+import { translations } from './i18n/translations';
+
+const LANG_FADE_MS = 250;
 
 export function App() {
-  const [lang, setLang] = useState('es');
+  const [lang, setLang] = useLocalStorage('guessGame.lang', 'es');
+  const [theme, setTheme] = useLocalStorage('guessGame.theme', 'dark');
+  const [isChangingLang, setIsChangingLang] = useState(false);
   const [rollTrigger, setRollTrigger] = useState(0);
-  const [currentMaxLimit, setCurrentMaxLimit] = useState(1);
-  const [currentStage, setCurrentStage] = useState(1);
-  const [theme, setTheme] = useState('dark'); 
-  const [isChangingLang, setIsChangingLang] = useState(false); 
+  const [maxLimit, setMaxLimit] = useState(1);
+  const langTimeoutRef = useRef(null);
 
-  const traducciones = translations[lang];
+  const t = translations[lang];
 
-  const handleTriggerRoll = () => {
-    setRollTrigger((previousValue) => previousValue + 1);
-  };
+  // data-theme y data-lang van en <html> para que afecten a toda la página
+  // (incluido el fondo del body y los modales).
+  useLayoutEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.dataset.lang = lang;
+  }, [theme, lang]);
 
-  const handleStageChange = useCallback((stage, max) => {
-    setCurrentStage(stage);
-    setCurrentMaxLimit(max);
-  }, []);
+  useEffect(() => () => clearTimeout(langTimeoutRef.current), []);
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
-  };
+  const handleAttemptMade = useCallback(
+    () => setRollTrigger((value) => value + 1),
+    []
+  );
+
+  const handleStageChange = useCallback((_stage, max) => setMaxLimit(max), []);
+
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
 
   const toggleLanguage = () => {
+    if (isChangingLang) return;
     setIsChangingLang(true);
-    setTimeout(() => {
-      setLang((prevLang) => (prevLang === 'es' ? 'en' : 'es'));
+    langTimeoutRef.current = setTimeout(() => {
+      setLang((prev) => (prev === 'es' ? 'en' : 'es'));
       setIsChangingLang(false);
-    }, 250);
+    }, LANG_FADE_MS);
   };
 
   return (
-    <div
-      className={`app-shell stage-${currentStage} ${isChangingLang ? 'lang-fade-out' : 'lang-fade-in'}`}
-      data-theme={theme}
-      data-lang={lang}
-      style={{ background: 'var(--page-gradient)' }}
-    >
+    <div className={`app-shell ${isChangingLang ? 'lang-fade-out' : ''}`}>
       <DevBanner />
+      <LanguageToggle title={t.langToggleTitle} onToggle={toggleLanguage} />
+      <ThemeToggle title={t.themeToggleTitle(theme)} onToggle={toggleTheme} />
 
-      {/* Componente del Botón de Idiomas Modularizado y Rescatado 🔥 */}
-      <LanguageToggle lang={lang} toggleLanguage={toggleLanguage} />
-
-      <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-
-      <Header
-        t={traducciones}
-        maxLimit={currentMaxLimit}
-        triggerRoll={rollTrigger}
-      />
+      <Header t={t} maxLimit={maxLimit} triggerRoll={rollTrigger} />
 
       <GuessGame
-        t={traducciones}
-        onAttemptMade={handleTriggerRoll}
+        t={t}
+        onAttemptMade={handleAttemptMade}
         onStageChange={handleStageChange}
       />
     </div>

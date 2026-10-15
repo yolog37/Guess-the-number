@@ -265,7 +265,7 @@ export default function GuessGame({
       </div>
 
             {/* --- MODAL: GANÓ EL STAGE (REPARADO) --- */}
-            {/* --- MODAL: GANÓ EL STAGE (PREMIUM ESTRUCTURADO 🚀) --- */}
+            
       {gameState === 'won' && (
         <div className="splash-overlay">
           <div className="splash-modal animate-pop">
